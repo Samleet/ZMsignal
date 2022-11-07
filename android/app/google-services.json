@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "962871648414",
+    "project_id": "zmstrategy-app",
+    "storage_bucket": "zmstrategy-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:962871648414:android:ca6fafc9e5bca43bc19b8f",
+        "android_client_info": {
+          "package_name": "com.zmstrategy.signal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "962871648414-e0vrhtr9l8ma0hfspnesooh0qae9nclq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJN4hAR5uhy1sycaJxfl2u5FXQ4fLSMyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "962871648414-e0vrhtr9l8ma0hfspnesooh0qae9nclq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
