@@ -19,9 +19,11 @@ class ScreenProvider {
         return  MaterialPageRoute(builder: (context) => WebViewScreen(
           url: data['url'],
           title: data['title'],
-          appbar: data['appbar'] ?? true,
           cookies: data['cookies'],
+          delegates: data['delegates'],
         ));
+
+        
 
       default:
         return MaterialPageRoute(builder: (context) => ErrorScreen()

@@ -1,19 +1,20 @@
 import 'dart:io';
+import 'package:ZMstrategy/config/routes/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
  class WebViewScreen extends StatefulWidget {
   final String url;
-  final String title;
-  final bool appbar;
+  final String? title;
   final Map? cookies;
+  final Map? delegates;
 
   const WebViewScreen({
     required this.url,
-    required this.title,
-    this.appbar = true,
-    this.cookies
+    this.title,
+    this.cookies,
+    this.delegates
   });
   
    @override
@@ -58,15 +59,17 @@ import 'package:webview_flutter/webview_flutter.dart';
       );
 
       return Future.value(true); // Exit app here and redirect
+      
     }
   }
   
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return WillPopScope(
       onWillPop: () => goBack(context),
       child: Scaffold(
-        appBar: widget.appbar ? AppBar(title: Text(widget.title)) : null,
+        appBar: 
+        widget.title != null ? AppBar(title: Text(widget.title!)) : null,
         body: SafeArea(
           child: Stack(
             children: <Widget>[
@@ -78,10 +81,27 @@ import 'package:webview_flutter/webview_flutter.dart';
                   });
                 },
                 javascriptMode: JavascriptMode.unrestricted,
+                navigationDelegate: (NavigationRequest navigation ) async {
+                  if(widget.delegates!.isNotEmpty){
+                    Map delegates = widget.delegates!;
+
+                    delegates.entries.map((e) {
+                      dynamic route = e.key;
+                      dynamic action = e.value;
+
+                      if(navigation.url.contains(route)){
+                        Function.apply(action, null);
+                      }
+                    }).toList();
+                  }
+                  
+                  return NavigationDecision.navigate;
+                  
+                },
                 onWebViewCreated: (WebViewController getController) async {   
                   _controller = getController;
 
-                  var cookies = _controller.runJavascriptReturningResult (
+                  var cookies = _controller.runJavascriptReturningResult  (
                     'document.cookie',
                   );
                   
@@ -90,7 +110,7 @@ import 'package:webview_flutter/webview_flutter.dart';
               isLoading ? Center(
                 child: CircularProgressIndicator()
               ) 
-              : Stack(),
+              : Stack(), //////////////////////////////////////////////////
             ]
           ),
         ),

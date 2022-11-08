@@ -41,7 +41,12 @@ class _LoginScreenState extends State<LoginScreen> {
   void redirect(String token){
     RouteGenerator.goto(WEBVIEW, {
       "url": "https://beta.zmstrategy.com?token=$token&channel=app",
-      'appbar': false,
+      "delegates": {
+        "signout": () {
+          Storage.delete('user');
+          RouteGenerator.exit(LOGIN);
+        }
+      }
     });
   }
 
@@ -64,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
               setState(() {
                 countdown = 5;
               });
+
               return;
             }
 
@@ -76,8 +82,8 @@ class _LoginScreenState extends State<LoginScreen> {
             );           
           }
         });
-
       }
+      
     });
   }
 
@@ -217,58 +223,56 @@ class _LoginScreenState extends State<LoginScreen> {
                     password: true,
                   ),
                   Container(
-                  margin: EdgeInsets.only(top: 20),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () => login(),
-                          style: ElevatedButton.styleFrom(shape: StadiumBorder()), //new button
-                          child: isLoading ?  
-                          SizedBox(
-                            width: 25,
-                            height: 25,
-                            child: Center(
-                              child: CircularProgressIndicator(color: Colors.white),
-                            ),
-                          )
-                          :
-                          Text("Log in")
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () { 
-                          // await launchUrl(Uri.parse('https://beta.zmstrategy.com/account/register'));
-                          RouteGenerator.goto(WEBVIEW, {
-                            "url": 'https://beta.zmstrategy.com/account/register', "title": 'Register'
-                          });
-                          
-                        },
-                        child: RichText(
-                          textAlign: TextAlign.center,
-                          text: TextSpan(
-                            text: "New user? ",
-                            style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold,
-                            fontSize: 12),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: "Create an account",
-                                style: TextStyle(
-                                  color: Color(0XFF094163)
-                                ),
-                                // recognizer: TapGestureRecognizer()..onTap = () => print('Tap'),
+                    margin: EdgeInsets.only(top: 20),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () => login(),
+                            style: ElevatedButton.styleFrom(shape: StadiumBorder()), //new button
+                            child: isLoading ?  
+                            SizedBox(
+                              width: 25,
+                              height: 25,
+                              child: Center(
+                                child: CircularProgressIndicator(color: Colors.white),
                               ),
-                            ]
+                            )
+                            :
+                            Text("Log in")
                           ),
                         ),
-                      ),
-                      SizedBox(height: 10),
-                    ],
-                  ),
-                )
+                        SizedBox(height: 20),
+                        GestureDetector(
+                          onTap: () { 
+                            RouteGenerator.goto(WEBVIEW, {
+                              "url": 'https://beta.zmstrategy.com/account/register', 
+                            });
+                          },
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: "New user? ",
+                              style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold,
+                              fontSize: 12),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: "Create an account",
+                                  style: TextStyle(
+                                    color: Color(0XFF094163)
+                                  ),
+                                  // recognizer: TapGestureRecognizer()..onTap = () => print('Tap'),
+                                ),
+                              ]
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                      ],
+                    ),
+                  )
                 ]
               ],
             ),
